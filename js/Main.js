@@ -29,7 +29,15 @@ function moveAll() {
   player1.move();
 }
 function drawAll() {
-  drawWorlds();
+
+  canvasContext.save();
+  canvasContext.translate( -camPanX, -camPanY);
+
+  drawOnlyTilesInView();
+  //colorText("name: " + player1.name, camPanX ,camPanY+10, 'black');
+  //colorText("Score: " + player1.score, camPanX,camPanY + 20, 'black');
   player1.draw();
+  canvasContext.restore();
+
   debug_DrawMouseCoord();
 }

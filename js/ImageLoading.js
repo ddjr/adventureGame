@@ -27,7 +27,9 @@ function loadImages() {
     {worldType: WORLD_CRACK, theFile: "sandstone_crackedbrick.png" },
     {worldType: WORLD_KEY, theFile: "key.png" },
     {worldType: WORLD_DOOR, theFile: "sandstone_door.png" },
-    {worldType: WORLD_GOAL, theFile: "cup.png" }
+    {worldType: WORLD_GOAL, theFile: "cup.png" },
+    {worldType: WORLD_WATER, theFile: "water.png" },
+    {worldType: WORLD_ORB, theFile: "orb.png" }
   ];
 
   picsToLoad = imageList.length;

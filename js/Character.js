@@ -3,7 +3,9 @@ const MOVE_SPEED = 5;
 function characterClass() {
   this.x = 75;
   this.y = 75;
+  this.hitBox = 15;
   this.score = 0;
+  this.canSwim = false;
   this.sprite; // Character picture displayed
   this.name = "Untitled Character";
   this.lastLocation; // Characters last position
@@ -49,7 +51,7 @@ function characterClass() {
   } // end  this.reset
 
   this.move = function() {
-    if(this.keyHeld_Up){
+    if(this.keyHeld_Up) {
       this.y -= MOVE_SPEED;
     }
     if(this.keyHeld_Down) {

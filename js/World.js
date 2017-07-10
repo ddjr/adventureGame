@@ -1,20 +1,11 @@
 const WORLD_BLOCK_SIZE = 50; // size in pixels
-const WORLD_COLS = 16;
-const WORLD_ROWS = 12;
+
 
 var worldGrid = [];
-var worldTiles =[
-  {tileType: WORLD_ROAD, tileHandler: tileGroundHandling },
-  {tileType: WORLD_WALL, tileHandler: tileGroundHandling },
-  {tileType: WORLD_PLAYER_START, tileHandler: tileGroundHandling},
-  {tileType: WORLD_FILL, tileHandler: tileGroundHandling },
-  {tileType: WORLD_TREE, tileHandler: tileWallHandling},
-  {tileType: WORLD_CRACK, tileHandler: tileGroundHandling},
-  {tileType: WORLD_KEY, tileHandler: tileKeyHandling},
-  {tileType: WORLD_DOOR, tileHandler: tileDoorHandling},
-  {tileType: WORLD_GOAL, tileHandler: tileGoalhandling}
-];
-
+var camPanX = 0.0;
+var camPanY = 0.0;
+const PLAYER_DIST_FROM_CENTER_BERFORE_CAMERA_PAN_X = 150;
+const PLAYER_DIST_FROM_CENTER_BERFORE_CAMERA_PAN_Y = 100;
 
 function returnTileTypeAtColRow(col,row) {
   if(col >= 0 && col < WORLD_COLS && // is character within the left and right bounds of the worldGrid
@@ -25,88 +16,116 @@ function returnTileTypeAtColRow(col,row) {
     return WORLD_BLOCK_WALL;
   }
 }
-function isTileAWall(tileType){
-  if(tileType == WORLD_TREE ||
-     tileType == WORLD_DOOR) {
-    return true;
+
+function characterTileHandling(characterWorldCol, characterWorldRow, character) {
+  var tileType = returnTileTypeAtColRow(characterWorldCol,characterWorldRow);
+  var currentIndex = rowColToArrayIndex(characterWorldCol,characterWorldRow);
+  //console.log(worldTiles[tileType].tileHandler);
+  worldTiles[tileType].tileHandler(character, currentIndex);
+}
+function isInbound(col, row) {
+  if(col >= 0 && col < WORLD_COLS && // is character within the left and right bounds of the worldGrid
+     row >= 0 && row < WORLD_ROWS) { // is character within the top and bottom bounds of the worldGrid
+       return true;
   }
   return false;
-}
-function pushPlayerToLastLocation(character) {
-  character.x = character.lastLocation.x;
-  character.y = character.lastLocation.y;
-}
-function characterTileHandling(characterWorldCol, characterWorldRow, character) {
-  var tileHere = returnTileTypeAtColRow(characterWorldCol,characterWorldRow);
-  var currentIndex = rowColToArrayIndex(characterWorldCol,characterWorldRow);
 
-  worldTiles[tileHere].tileHandler(character, currentIndex);
-}
-function tileKeyHandling(character,currentIndex) {
-  character.keys += 1;
-  worldGrid[currentIndex] = WORLD_ROAD;
-  console.log("you have " + character.keys + " keys!");
-}
-function tileWallHandling(character,currentIndex) {
-  pushPlayerToLastLocation(character);
-}
-function tileGroundHandling(character,currentIndex) {
-  // character does not interact with the ground
-}
-function tileDoorHandling(character,currentIndex) { // <-- jokes are real
-  if(character.keys > 0) {
-    worldGrid[currentIndex] = WORLD_ROAD;
-    character.keys -= 1;
-    console.log("you have " + character.keys + " keys!");
-  } else {
-    tileWallHandling(character,currentIndex);
-  }
-}
-function tileGoalhandling(character,currentIndex) {
-  loadLevel(levels[0]);
 }
 function characterWorldHanding(character) {
-  var characterWorldCol = Math.floor(character.x / WORLD_BLOCK_SIZE);
-  var characterWorldRow = Math.floor(character.y / WORLD_BLOCK_SIZE);
+  var characterHitBoxLeftCol = Math.floor((character.x - 15) / WORLD_BLOCK_SIZE);
+  var characterHitBoxTopRow = Math.floor((character.y + 7)/ WORLD_BLOCK_SIZE);
 
-  if(characterWorldCol >= 0 && characterWorldCol < WORLD_COLS && // is character within the left and right bounds of the worldGrid
-     characterWorldRow >= 0 && characterWorldRow < WORLD_ROWS) { // is character within the top and bottom bounds of the worldGrid
-    characterTileHandling(characterWorldCol, characterWorldRow,character);
+  var characterHitBoxRightCol = Math.floor((character.x + 12)/ WORLD_BLOCK_SIZE);
+  var characterHitBoxBottomRow = Math.floor((character.y + 20)/ WORLD_BLOCK_SIZE);
+  if(isInbound(characterHitBoxLeftCol,characterHitBoxTopRow) &&
+     isInbound(characterHitBoxLeftCol,characterHitBoxBottomRow) &&
+     isInbound(characterHitBoxRightCol,characterHitBoxTopRow) &&
+     isInbound(characterHitBoxRightCol,characterHitBoxBottomRow) ) {
+    characterTileHandling(characterHitBoxLeftCol, characterHitBoxTopRow, character);
+    characterTileHandling(characterHitBoxLeftCol, characterHitBoxBottomRow, character);
+    characterTileHandling(characterHitBoxRightCol, characterHitBoxTopRow, character);
+    characterTileHandling(characterHitBoxRightCol, characterHitBoxBottomRow, character);
+    cameraFollow(character);
   } else {
     pushPlayerToLastLocation(character);
   }// end of if in bounds of worldGrid
 } // end of characterWorldHanding
 
+function cameraFollow(character) {
+  var centerOfViewX = camPanX + canvas.width/2;
+  var centerOfViewY = camPanY + canvas.height/2;
 
+  var characterDistFromCenterOfViewX = Math.abs(character.x - centerOfViewX);
+  var characterDistFromCenterOfViewY = Math.abs(character.y - centerOfViewY);
+  if(characterDistFromCenterOfViewX > PLAYER_DIST_FROM_CENTER_BERFORE_CAMERA_PAN_X) {
+    if(centerOfViewX < character.x) {
+      camPanX += MOVE_SPEED;
+    } else {
+      camPanX -= MOVE_SPEED;
+    }
+  }
+  if(characterDistFromCenterOfViewY > PLAYER_DIST_FROM_CENTER_BERFORE_CAMERA_PAN_Y) {
+    if(centerOfViewY < character.y) {
+      camPanY += MOVE_SPEED;
+    } else {
+      camPanY -= MOVE_SPEED;
+    }
+  }
+  preventCameraPanningOffTheMap();
+} // end cameraFollow()
+function preventCameraPanningOffTheMap() {
+  if(camPanX < 0) {
+    camPanX = 0;
+  }
+  if(camPanY < 0) {
+    camPanY = 0;
+  }
+  var maxPanRight = WORLD_COLS * WORLD_BLOCK_SIZE - canvas.width;
+  var maxPanTop = WORLD_ROWS * WORLD_BLOCK_SIZE -  canvas.height;
+  if(camPanX > maxPanRight) {
+    camPanX = maxPanRight;
+  }
+  if(camPanY > maxPanTop) {
+    camPanY = maxPanTop;
+  }
+
+}
+
+function drawOnlyTilesInView() {
+  var cameraLeftMostCol = Math.floor(camPanX / WORLD_BLOCK_SIZE);
+  var cameraTopMostRow = Math.floor(camPanY / WORLD_BLOCK_SIZE);
+
+  var colsThatFitOnScreen = Math.floor(canvas.width / WORLD_BLOCK_SIZE);
+  var rowsThatFitOnScreen = Math.floor(canvas.height / WORLD_BLOCK_SIZE);
+
+  var cameraRightMostCol = cameraLeftMostCol + colsThatFitOnScreen + 2;
+  var cameraBottomMostRow = cameraTopMostRow + rowsThatFitOnScreen + 1;
+
+
+  for(var eachRow=cameraTopMostRow; eachRow<cameraBottomMostRow; eachRow++) {
+      for(var eachCol=cameraLeftMostCol; eachCol<cameraRightMostCol; eachCol++) {
+        var arrayIndex = rowColToArrayIndex(eachCol, eachRow);
+        if(arrayIndex < worldGrid.length) {
+        var tileKindHere = worldGrid[arrayIndex];
+        var useImg = worldPics[tileKindHere];
+
+        if(isTileTransparent(tileKindHere)) {
+          canvasContext.drawImage(worldPics[WORLD_ROAD], eachCol*WORLD_BLOCK_SIZE,eachRow*WORLD_BLOCK_SIZE);
+        }
+        canvasContext.drawImage(useImg, eachCol*WORLD_BLOCK_SIZE, eachRow*WORLD_BLOCK_SIZE);
+        //drawGridLines(eachCol, eachRow);
+      } // end of if inbounds of worldGrid
+    } // end of for eachCol world
+  } // end of for eachRow
+} // drawOnlyBricksInView()
 function rowColToArrayIndex(col, row) {
   return  col + WORLD_COLS * row;
 }
-
-function isTitleTransparent(tileType) {
-  if(tileType == WORLD_KEY ||
-     tileType == WORLD_TREE ||
-     tileType == WORLD_GOAL ) {
-    return true;
-  }
-  return false;
+function drawGridLines(col,row) {
+  colorRect(col* WORLD_BLOCK_SIZE + WORLD_BLOCK_SIZE -1,row * WORLD_BLOCK_SIZE, 1, WORLD_BLOCK_SIZE, 'grey');
+  colorRect(col* WORLD_BLOCK_SIZE ,row *WORLD_BLOCK_SIZE + WORLD_BLOCK_SIZE-1, WORLD_BLOCK_SIZE, 1, 'grey');
 }
-function drawWorlds() {
-  var arrayIndex = 0;
-  var drawTitleX = 0;
-  var drawTitleY = 0;
-  for(var eachRow=0; eachRow<WORLD_ROWS; eachRow++) {
-    for(var eachCol=0; eachCol<WORLD_COLS; eachCol++) {
-      var tileKindHere = worldGrid[arrayIndex];
-      var useImg = worldPics[tileKindHere];
-      if(isTitleTransparent(tileKindHere)) {
-        canvasContext.drawImage(worldPics[WORLD_ROAD], drawTitleX, drawTitleY);
-      }
-      canvasContext.drawImage(useImg, drawTitleX, drawTitleY);
-
-      arrayIndex ++;
-      drawTitleX += WORLD_BLOCK_SIZE;
-    } // end of for eachCol world
-    drawTitleX = 0;
-    drawTitleY += WORLD_BLOCK_SIZE;
-  } // end of for eachRow
-} // end of drawWorlds()
+function pushPlayerToLastLocation(character) {
+  character.x = character.lastLocation.x;
+  character.y = character.lastLocation.y;
+}
