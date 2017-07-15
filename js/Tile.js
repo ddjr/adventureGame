@@ -36,7 +36,7 @@ function tileKeyHandling(character,currentIndex) {
   console.log("you have " + character.keys + " keys!");
 }
 function tileWallHandling(character,currentIndex) {
-  pushPlayerToLastLocation(character);
+  character.inWall = true;
 }
 function tileGroundHandling(character,currentIndex) {
   // character does not interact with the ground
@@ -54,6 +54,7 @@ function tileDoorHandling(character,currentIndex) { // <-- jokes are real
 function tileWaterhandling (character,currentIndex){
   if(character.canSwim) {
     tileGroundHandling(character,currentIndex);
+    character.onWater = true;
   } else {
     tileWallHandling(character,currentIndex);
   }

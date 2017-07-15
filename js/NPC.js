@@ -1,19 +1,15 @@
-const MOVE_SPEED = 5;
 
-function characterClass() {
+function npcClass() {
   this.x = 75;
   this.y = 75;
-  this.hitBox = 15;
-  this.score = 0;
   this.canSwim = false;
-  this.inWall = false;
   this.sprite; // Character picture displayed
   this.spriteWater;
   this.name = "Untitled Character";
   this.lastLocation; // Characters last position
   this.keys = 0; // Keys that unlock doors
   this.onWater = false;
-  this.hasCamera = true;
+  this.hasCamera = false;
 
   this.keyHeld_Up = false;
   this.keyHeld_Down = false;
@@ -42,7 +38,7 @@ function characterClass() {
     for(var eachRow=0; eachRow<WORLD_ROWS; eachRow++) {
       for(var eachCol=0; eachCol<WORLD_COLS; eachCol++) {
         var arrayIndex = rowColToArrayIndex(eachCol, eachRow);
-        if(worldGrid[arrayIndex] == WORLD_PLAYER_START) {
+        if(worldGrid[arrayIndex] == WORLD_NPC_START) {
           worldGrid[arrayIndex] = WORLD_ROAD;
           this.ang = -Math.PI/2;
           this.x = eachCol * WORLD_BLOCK_SIZE + WORLD_BLOCK_SIZE/2;
@@ -56,19 +52,18 @@ function characterClass() {
   } // end  this.reset
 
   this.move = function() {
-    if(this.keyHeld_Up) {
+    var willMove = Math.random() * 500;
+
+    if(willMove < 2 ) {
       this.y -= MOVE_SPEED;
-    }
-    if(this.keyHeld_Down) {
+    } else if(willMove < 4 ) {
       this.y += MOVE_SPEED;
-    }
-    if(this.keyHeld_Left){
+    } else if(willMove < 6){
       this.x -= MOVE_SPEED;
-    }
-    if(this.keyHeld_Right) {
+    } else if(willMove < 8) {
       this.x += MOVE_SPEED;
     }
-    characterWorldHanding(this);
+    characterWorldHanding(this , this.hasCamera);
     this.lastLocation = { x:this.x, y:this.y };// should come after characterWorldHanding()
 
   }

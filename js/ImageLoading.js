@@ -1,4 +1,5 @@
 var characterSprite1 = document.createElement("img");
+var characterWaterSprite = document.createElement("img");
 var worldPics = [];
 var picsToLoad = 0; // Set automatically based on imageList in loadImages()
 
@@ -20,6 +21,7 @@ function loadImageForWorldCode(worldCode, fileName) {
 function loadImages() {
   var imageList= [
     {varName: characterSprite1, theFile: "character.png" },
+    {varName: characterWaterSprite, theFile: "character_water.png" },
     {worldType: WORLD_ROAD, theFile: "softsand_special.png" },
     {worldType: WORLD_WALL, theFile: "sandstone_brick.png" },
     {worldType: WORLD_FILL, theFile: "softsand.png" },

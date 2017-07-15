@@ -32,20 +32,43 @@ function isInbound(col, row) {
 
 }
 function characterWorldHanding(character) {
-  var characterHitBoxLeftCol = Math.floor((character.x - 15) / WORLD_BLOCK_SIZE);
-  var characterHitBoxTopRow = Math.floor((character.y + 7)/ WORLD_BLOCK_SIZE);
+  var topCol =  Math.floor(character.x/WORLD_BLOCK_SIZE);
+  var topRow =  Math.floor((character.y - 10)/WORLD_BLOCK_SIZE);
 
-  var characterHitBoxRightCol = Math.floor((character.x + 12)/ WORLD_BLOCK_SIZE);
-  var characterHitBoxBottomRow = Math.floor((character.y + 20)/ WORLD_BLOCK_SIZE);
-  if(isInbound(characterHitBoxLeftCol,characterHitBoxTopRow) &&
-     isInbound(characterHitBoxLeftCol,characterHitBoxBottomRow) &&
-     isInbound(characterHitBoxRightCol,characterHitBoxTopRow) &&
-     isInbound(characterHitBoxRightCol,characterHitBoxBottomRow) ) {
-    characterTileHandling(characterHitBoxLeftCol, characterHitBoxTopRow, character);
-    characterTileHandling(characterHitBoxLeftCol, characterHitBoxBottomRow, character);
-    characterTileHandling(characterHitBoxRightCol, characterHitBoxTopRow, character);
-    characterTileHandling(characterHitBoxRightCol, characterHitBoxBottomRow, character);
-    cameraFollow(character);
+  var leftCol = Math.floor((character.x - 10)/WORLD_BLOCK_SIZE);
+  var leftRow = Math.floor(character.y/WORLD_BLOCK_SIZE);
+
+  var rightCol = Math.floor((character.x + 10)/WORLD_BLOCK_SIZE);
+  var rightRow = Math.floor(character.y/WORLD_BLOCK_SIZE);
+
+  var bottomCol = Math.floor(character.x/WORLD_BLOCK_SIZE);
+  var bottomRow = Math.floor((character.y +20)/WORLD_BLOCK_SIZE);
+
+  if(isInbound(leftCol, topRow) &&
+     isInbound(rightCol, bottomRow) ){
+    characterTileHandling(bottomCol, bottomRow, character);
+    if(character.inWall) {
+      character.y -= MOVE_SPEED;
+      character.inWall = false
+    }
+    characterTileHandling(topCol, topRow, character);
+    if(character.inWall) {
+      character.y += MOVE_SPEED;
+      character.inWall = false
+    }
+    characterTileHandling(rightCol, rightRow, character);
+    if(character.inWall) {
+      character.x -= MOVE_SPEED;
+      character.inWall = false
+    }
+    characterTileHandling(leftCol, leftRow, character);
+    if(character.inWall) {
+      character.x += MOVE_SPEED;
+      character.inWall = false
+    }
+    if(character.hasCamera) {
+      cameraFollow(character);
+    }
   } else {
     pushPlayerToLastLocation(character);
   }// end of if in bounds of worldGrid
