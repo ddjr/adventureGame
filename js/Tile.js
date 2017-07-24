@@ -1,25 +1,16 @@
-// const WORLD_ROAD = 0;
-// const WORLD_WALL = 1;
-// const WORLD_PLAYER_START = 2;
-// const WORLD_FILL = 3;
-// const WORLD_TREE = 4;
-// const WORLD_CRACK = 5;
-// const WORLD_KEY = 6;
-// const WORLD_DOOR = 7;
-// const WORLD_GOAL = 8;
-var worldTiles =[
-  {tileType: WORLD_ROAD, tileHandler: tileGroundHandling },
-  {tileType: WORLD_WALL, tileHandler: tileGroundHandling },
-  {tileType: WORLD_PLAYER_START, tileHandler: tileGroundHandling},
-  {tileType: WORLD_FILL, tileHandler: tileGroundHandling },
-  {tileType: WORLD_TREE, tileHandler: tileWallHandling},
-  {tileType: WORLD_CRACK, tileHandler: tileGroundHandling},
-  {tileType: WORLD_KEY, tileHandler: tileKeyHandling},
-  {tileType: WORLD_DOOR, tileHandler: tileDoorHandling},
-  {tileType: WORLD_GOAL, tileHandler: tileGoalhandling},
-  {tileType: WORLD_WATER, tileHandler: tileWaterhandling},
-  {tileType: WORLD_ORB, tileHandler: tileOrbhandling}
-];
+var worldTiles = {};
+  worldTiles[WORLD_ROAD] = tileGroundHandling;
+  worldTiles[WORLD_WALL] = tileGroundHandling;
+  worldTiles[WORLD_FILL] = tileGroundHandling;
+  worldTiles[WORLD_CRACK] = tileGroundHandling;
+
+  worldTiles[WORLD_TREE] = tileWallHandling;
+  worldTiles[WORLD_DOOR] = tileDoorHandling;
+  worldTiles[WORLD_GOAL] = tileGoalHandling;
+  worldTiles[WORLD_WATER] = tileWaterHandling;
+  worldTiles[WORLD_KEY] = tileKeyHandling;
+  worldTiles[WORLD_ORB] = tileOrbHandling;
+
 function isTileTransparent(tileType) {
   if(tileType == WORLD_KEY ||
      tileType == WORLD_TREE ||
@@ -29,41 +20,41 @@ function isTileTransparent(tileType) {
   }
   return false;
 }
-function tileKeyHandling(character,currentIndex) {
+function tileKeyHandling(character,characterWorldCol,characterWorldRow) {
   character.keys ++;
   character.score += 100;
-  worldGrid[currentIndex] = WORLD_ROAD;
+  worldGrid[characterWorldRow][characterWorldCol] = WORLD_ROAD;
   console.log("you have " + character.keys + " keys!");
 }
-function tileWallHandling(character,currentIndex) {
+function tileWallHandling(character,characterWorldCol,characterWorldRow) {
   character.inWall = true;
 }
-function tileGroundHandling(character,currentIndex) {
+function tileGroundHandling(character,characterWorldCol,characterWorldRow) {
   // character does not interact with the ground
 }
-function tileDoorHandling(character,currentIndex) { // <-- jokes are real
+function tileDoorHandling(character,characterWorldCol,characterWorldRow) { // <-- jokes are real
   if(character.keys > 0) {
-    worldGrid[currentIndex] = WORLD_ROAD;
+    worldGrid[characterWorldRow][characterWorldCol] = WORLD_ROAD;
     character.keys -= 1;
     character.score += 50;
     console.log("you have " + character.keys + " keys!");
   } else {
-    tileWallHandling(character,currentIndex);
+    tileWallHandling(character,characterWorldCol,characterWorldRow);
   }
 }
-function tileWaterhandling (character,currentIndex){
+function tileWaterHandling (character,characterWorldCol,characterWorldRow){
   if(character.canSwim) {
-    tileGroundHandling(character,currentIndex);
+    tileGroundHandling(character,characterWorldCol,characterWorldRow);
     character.onWater = true;
   } else {
-    tileWallHandling(character,currentIndex);
+    tileWallHandling(character,characterWorldCol,characterWorldRow);
   }
 }
-function tileGoalhandling(character,currentIndex) {
+function tileGoalHandling(character,characterWorldCol,characterWorldRow) {
   loadLevel(levels[0]);
 }
-function tileOrbhandling(character,currentIndex) {
+function tileOrbHandling(character,characterWorldCol,characterWorldRow) {
   character.canSwim = true;
-  worldGrid[currentIndex] = WORLD_ROAD;
+  worldGrid[characterWorldRow][characterWorldCol] = WORLD_ROAD;
   console.log("you can now swim!!");
 }

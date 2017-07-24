@@ -10,6 +10,8 @@ function npcClass() {
   this.keys = 0; // Keys that unlock doors
   this.onWater = false;
   this.hasCamera = false;
+  this.startCol = 10;
+  this.startRow = 10;
 
   this.keyHeld_Up = false;
   this.keyHeld_Down = false;
@@ -35,20 +37,10 @@ function npcClass() {
   this.spriteWater = water_image;
   this.speed = 0;
   this.keys = 0;
-    for(var eachRow=0; eachRow<WORLD_ROWS; eachRow++) {
-      for(var eachCol=0; eachCol<WORLD_COLS; eachCol++) {
-        var arrayIndex = rowColToArrayIndex(eachCol, eachRow);
-        if(worldGrid[arrayIndex] == WORLD_NPC_START) {
-          worldGrid[arrayIndex] = WORLD_ROAD;
-          this.ang = -Math.PI/2;
-          this.x = eachCol * WORLD_BLOCK_SIZE + WORLD_BLOCK_SIZE/2;
-          this.y = eachRow * WORLD_BLOCK_SIZE + WORLD_BLOCK_SIZE/2;
-          this.lastLocation = { x:this.x, y:this.y };
-          return;
-        } // end of if start location
-      } // end of for eachCol world
-    } // end of for eachRow
-    console.log("NO PLAYER START FOUND FOR CAR " + this.name);
+  this.ang = -Math.PI/2;
+  this.x = this.startCol * WORLD_BLOCK_SIZE + WORLD_BLOCK_SIZE/2;
+  this.y = this.startRow  * WORLD_BLOCK_SIZE + WORLD_BLOCK_SIZE/2;
+  this.lastLocation = { x:this.x, y:this.y };
   } // end  this.reset
 
   this.move = function() {

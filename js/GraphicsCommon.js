@@ -19,3 +19,10 @@ function colorText(showWords, textX,textY, fillColor) {
   canvasContext.fillStyle = fillColor;
   canvasContext.fillText(showWords, textX,textY);
 }
+function outlineRect(topLeftX, topLeftY, boxWidth, boxHeight, lineColor) {
+  canvasContext.beginPath();
+  canvasContext.strokeStyle = lineColor;
+  canvasContext.lineWidth = "3";
+  canvasContext.rect(topLeftX, topLeftY, boxWidth, boxHeight);
+  canvasContext.stroke();
+}

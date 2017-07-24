@@ -1,4 +1,4 @@
-const MOVE_SPEED = 5;
+const MOVE_SPEED = 15;
 
 function characterClass() {
   this.x = 75;
@@ -34,25 +34,15 @@ function characterClass() {
   }
 
   this.reset = function(image, water_image, name) {
-  this.sprite = image;
-  this.name = name;
-  this.spriteWater = water_image;
-  this.speed = 0;
-  this.keys = 0;
-    for(var eachRow=0; eachRow<WORLD_ROWS; eachRow++) {
-      for(var eachCol=0; eachCol<WORLD_COLS; eachCol++) {
-        var arrayIndex = rowColToArrayIndex(eachCol, eachRow);
-        if(worldGrid[arrayIndex] == WORLD_PLAYER_START) {
-          worldGrid[arrayIndex] = WORLD_ROAD;
-          this.ang = -Math.PI/2;
-          this.x = eachCol * WORLD_BLOCK_SIZE + WORLD_BLOCK_SIZE/2;
-          this.y = eachRow * WORLD_BLOCK_SIZE + WORLD_BLOCK_SIZE/2;
-          this.lastLocation = { x:this.x, y:this.y };
-          return;
-        } // end of if start location
-      } // end of for eachCol world
-    } // end of for eachRow
-    console.log("NO PLAYER START FOUND FOR CAR " + this.name);
+    this.sprite = image;
+    this.name = name;
+    this.spriteWater = water_image;
+    this.speed = 0;
+    this.keys = 0;
+    this.ang = -Math.PI/2;
+    this.x = 8 * WORLD_BLOCK_SIZE + WORLD_BLOCK_SIZE/2;
+    this.y = 4 * WORLD_BLOCK_SIZE + WORLD_BLOCK_SIZE/2;
+    this.lastLocation = { x:this.x, y:this.y };
   } // end  this.reset
 
   this.move = function() {
