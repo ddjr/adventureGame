@@ -1,6 +1,6 @@
 
 function npcClass() {
-  this.x = 75;
+  this.x = 75; 
   this.y = 75;
   this.canSwim = false;
   this.sprite; // Character picture displayed
@@ -10,8 +10,8 @@ function npcClass() {
   this.keys = 0; // Keys that unlock doors
   this.onWater = false;
   this.hasCamera = false;
-  this.startCol = 10;
-  this.startRow = 10;
+  this.startCol = PLAYER_STARTING_COL;
+  this.startRow = PLAYER_STARTING_ROW;
 
   this.keyHeld_Up = false;
   this.keyHeld_Down = false;
@@ -35,6 +35,7 @@ function npcClass() {
   this.sprite = image;
   this.name = name;
   this.spriteWater = water_image;
+  this.canSwim = false;
   this.speed = 0;
   this.keys = 0;
   this.ang = -Math.PI/2;

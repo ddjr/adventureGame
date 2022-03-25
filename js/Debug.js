@@ -1,4 +1,3 @@
-var debugMode = false;
 function debug_DrawMouseCoord() {
   if(debugMode) {
     var mouseTrackCol = mouseX / WORLD_BLOCK_SIZE;

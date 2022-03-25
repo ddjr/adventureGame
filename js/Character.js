@@ -1,5 +1,3 @@
-const MOVE_SPEED = 15;
-
 function characterClass() {
   this.x = 75;
   this.y = 75;
@@ -37,11 +35,12 @@ function characterClass() {
     this.sprite = image;
     this.name = name;
     this.spriteWater = water_image;
+    this.canSwim = false;
     this.speed = 0;
     this.keys = 0;
     this.ang = -Math.PI/2;
-    this.x = 8 * WORLD_BLOCK_SIZE + WORLD_BLOCK_SIZE/2;
-    this.y = 4 * WORLD_BLOCK_SIZE + WORLD_BLOCK_SIZE/2;
+    this.x = PLAYER_STARTING_COL * WORLD_BLOCK_SIZE + WORLD_BLOCK_SIZE/2;
+    this.y = PLAYER_STARTING_ROW * WORLD_BLOCK_SIZE + WORLD_BLOCK_SIZE/2;
     this.lastLocation = { x:this.x, y:this.y };
   } // end  this.reset
 

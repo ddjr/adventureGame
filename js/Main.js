@@ -1,6 +1,5 @@
 var canvas, canvasContext;
 var player1 = new characterClass();
-
 window.onload = function() {
   canvas = document.getElementById('gameCanvas');
   canvasContext = canvas.getContext('2d');
@@ -14,11 +13,11 @@ function imageLoadingDoneSoStartGame() {
   setInterval(updateAll, 1000/framesPerSecond);
 
   setupInput();
-  loadLevel(level1);
+  loadLevel(LEVEL_PACK[map_counter]);
 }
 function loadLevel(level) {
   worldGrid = level.slice();
-  console.log(worldGrid);
+  
   player1.reset(characterSprite1, characterWaterSprite, "Red Rock Racer");
 }
 
@@ -31,14 +30,20 @@ function moveAll() {
 }
 function drawAll() {
   canvasContext.save();
-  canvasContext.translate( -camPanX, -camPanY + LEVEL_EDITOR_HEIGHT);
+  if(LEVEL_EDITOR) {
+    canvasContext.translate( -camPanX, -camPanY+ LEVEL_EDITOR_HEIGHT);
+  } else {
+    canvasContext.translate( -camPanX, -camPanY);
+  }
   drawOnlyTilesInView();
   drawHUD();
-  drawMouseHover();
+  if(LEVEL_EDITOR) { drawMouseHover(); }
   player1.draw();
   canvasContext.restore();
-  drawTileSelector();
-  drawMouseHoverTileSelector();
+  if(LEVEL_EDITOR) { 
+    drawTileSelector();
+    drawMouseHoverTileSelector();
+  }
   if(mouseheld) {
      handleMouseClick();
   }

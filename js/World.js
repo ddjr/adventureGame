@@ -1,12 +1,9 @@
 "use strict";
-const WORLD_BLOCK_SIZE = 50; // size in pixels
-var showGridLines = true;
+
 
 var worldGrid = [];
 var camPanX = 0.0;
 var camPanY = 0.0;
-const PLAYER_DIST_FROM_CENTER_BERFORE_CAMERA_PAN_X = 150;
-const PLAYER_DIST_FROM_CENTER_BERFORE_CAMERA_PAN_Y = 100;
 
 function returnTileTypeAtColRow(col,row) {
     if(isInbound(col,row)) {
@@ -109,7 +106,12 @@ function preventCameraPanningOffTheMap() {
     camPanY = 0;
   }
   var maxPanRight = worldGrid[0].length * WORLD_BLOCK_SIZE - canvas.width;
-  var maxPanTop = worldGrid.length * WORLD_BLOCK_SIZE -  canvas.height + LEVEL_EDITOR_HEIGHT;
+  if (LEVEL_EDITOR) {
+    var maxPanTop = worldGrid.length * WORLD_BLOCK_SIZE -  canvas.height + LEVEL_EDITOR_HEIGHT;
+  } else {
+    var maxPanTop = worldGrid.length * WORLD_BLOCK_SIZE -  canvas.height;
+  }
+
   if(camPanX > maxPanRight) {
     camPanX = maxPanRight;
   }
