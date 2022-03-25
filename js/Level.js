@@ -207,6 +207,6 @@ var block4 = [
 
     var levelTEST = [[4,4,4,4,4,4,4,4,4,4,4,4],[4,0,0,0,0,0,0,0,0,0,0,4],[4,0,0,0,0,0,6,6,6,0,7,4],[4,0,0,0,0,0,6,6,6,0,7,4],[4,0,0,0,0,0,0,0,0,0,7,4],[4,0,0,0,0,0,0,0,0,0,7,4],[4,0,0,0,0,0,0,0,0,0,7,4],[4,0,0,0,0,0,0,0,0,0,7,4],[4,0,0,8,0,0,0,0,0,0,0,4],[4,0,0,0,0,0,10,0,9,9,9,4],[4,0,0,0,0,0,0,0,9,9,9,4],[4,4,4,4,4,4,4,4,4,4,4,4]];
 
-    // var TESTlevels = [levelTEST,level5, level2, baseLevel]; // TEST LEVELS
-    // var TESTlevels = [levelTEST]; // TEST LEVELS
+    var TESTlevels = [levelTEST,level5, level2, baseLevel]; // TEST LEVELS
+    var TESTlevels = [levelTEST]; // TEST LEVELS
     var levels = [level1, level2, level3, level4, level5];

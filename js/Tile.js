@@ -12,16 +12,16 @@ var worldTiles = {};
   worldTiles[WORLD_ORB] = tileOrbHandling;
 function writeHintText(text) {
   if(!HINTS_ON){ return }
-  var h4 = document.createElement('h4');
-  h4.appendChild(document.createTextNode(text));
-  document.body.appendChild(h4);
+  var h2 = document.createElement('h2');
+  h2.appendChild(document.createTextNode(text));
+  document.body.appendChild(h2);
 }
 function RemoveHintText() {
-  var h4 = document.getElementsByTagName("h4");
-  var length = h4.length;
-  if(h4 == undefined) { return }
+  var h2 = document.getElementsByTagName("h2");
+  var length = h2.length;
+  if(h2 == undefined) { return }
   for(i=0; i < length; i++) {
-    h4[0].remove();
+    h2[0].remove();
   }
 }
 function writeHeaderText(text) {
