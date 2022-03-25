@@ -29,7 +29,7 @@ function drawMouseHoverTileSelector() {
   var col = Math.floor(mouseX/WORLD_BLOCK_SIZE);
   var row = Math.floor(mouseY/WORLD_BLOCK_SIZE);
   if( isInbound(col, row)) {
-    if (mouseY < 50) {
+    if (mouseY < WORLD_BLOCK_SIZE) {
       outlineRect(col* WORLD_BLOCK_SIZE, row* WORLD_BLOCK_SIZE,
                WORLD_BLOCK_SIZE , WORLD_BLOCK_SIZE , 'blue' );
     }

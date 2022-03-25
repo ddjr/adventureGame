@@ -17,7 +17,7 @@ function imageLoadingDoneSoStartGame() {
 }
 function loadLevel(level) {
   worldGrid = level.slice();
-  
+
   player1.reset(characterSprite1, characterWaterSprite, "Red Rock Racer");
 }
 
@@ -36,7 +36,7 @@ function drawAll() {
     canvasContext.translate( -camPanX, -camPanY);
   }
   drawOnlyTilesInView();
-  drawHUD();
+  if(debugMode) { drawHUD(); }
   if(LEVEL_EDITOR) { drawMouseHover(); }
   player1.draw();
   canvasContext.restore();
@@ -44,6 +44,7 @@ function drawAll() {
     drawTileSelector();
     drawMouseHoverTileSelector();
   }
+  
   if(mouseheld) {
      handleMouseClick();
   }

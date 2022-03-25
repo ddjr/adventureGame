@@ -161,7 +161,7 @@ function pushPlayerToLastLocation(character) {
   character.y = character.lastLocation.y;
 }
 function drawHUD() {
-  //colorText("name: " + player1.name, camPanX ,camPanY+10, 'black');
-  //colorText("Score: " + player1.score, camPanX,camPanY + 20, 'black');
+  colorText("name: " + player1.name, camPanX ,camPanY+10, 'black');
+  colorText("Score: " + player1.score, camPanX,camPanY + 20, 'black');
   return;
 }

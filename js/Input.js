@@ -7,7 +7,7 @@ const PLAYER_STARTING_COL = 3;
 const PLAYER_STARTING_ROW = 3;
 var HINTS_ON = true;
 
-var LEVEL_PACK = TESTlevels;
+var LEVEL_PACK = levels;
 var map_counter = 0;
 
 const PLAYER_DIST_FROM_CENTER_BERFORE_CAMERA_PAN_X = 50;
@@ -33,6 +33,7 @@ if (LEVEL_EDITOR) {
     editButtons[i].classList.add("show");
   }
   LEVEL_PACK = [baseLevel];
+  var showGridLines = true;
 }
 
 function setupInput() {
