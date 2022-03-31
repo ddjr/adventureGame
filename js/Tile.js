@@ -10,6 +10,25 @@ var worldTiles = {};
   worldTiles[WORLD_WATER] = tileWaterHandling;
   worldTiles[WORLD_KEY] = tileKeyHandling;
   worldTiles[WORLD_ORB] = tileOrbHandling;
+function writeHintText(text) {
+  if(!HINTS_ON){ return }
+  var h2 = document.createElement('h2');
+  h2.appendChild(document.createTextNode(text));
+  document.body.appendChild(h2);
+}
+function RemoveHintText() {
+  var h2 = document.getElementsByTagName("h2");
+  var length = h2.length;
+  if(h2 == undefined) { return }
+  for(i=0; i < length; i++) {
+    h2[0].remove();
+  }
+}
+function writeHeaderText(text) {
+  var h1 = document.getElementsByTagName('h1');
+  h1.text(text);
+}
+
 
 function isTileTransparent(tileType) {
   if(tileType == WORLD_KEY ||
@@ -24,6 +43,7 @@ function tileKeyHandling(character,characterWorldCol,characterWorldRow) {
   character.keys ++;
   character.score += 100;
   worldGrid[characterWorldRow][characterWorldCol] = WORLD_ROAD;
+  writeHintText("You can open a door with that");
   console.log("you have " + character.keys + " keys!");
 }
 function tileWallHandling(character,characterWorldCol,characterWorldRow) {
@@ -51,10 +71,17 @@ function tileWaterHandling (character,characterWorldCol,characterWorldRow){
   }
 }
 function tileGoalHandling(character,characterWorldCol,characterWorldRow) {
-  loadLevel(levels[0]);
+  map_counter++;
+  RemoveHintText();
+  if( map_counter  >= LEVEL_PACK.length ) {
+    writeHintText("YOU WIN!!!");
+    loadLevel(baseLevel);
+  }
+  loadLevel(LEVEL_PACK[map_counter]);
 }
 function tileOrbHandling(character,characterWorldCol,characterWorldRow) {
   character.canSwim = true;
   worldGrid[characterWorldRow][characterWorldCol] = WORLD_ROAD;
-  console.log("you can now swim!!");
+  writeHintText("You can now SWIM in Water");
+  console.log("You can now SWIM in Water");
 }

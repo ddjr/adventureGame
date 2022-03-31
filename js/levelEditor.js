@@ -1,8 +1,8 @@
 var selectedTile = -1;
 var selectedIndex = -1;
-const LEVEL_EDITOR_HEIGHT = 50;
+const LEVEL_EDITOR_HEIGHT = WORLD_BLOCK_SIZE;
 function drawTileSelector() {
-  colorRect(0,0, canvas.width, 50, "black");
+  colorRect(0,0, canvas.width, WORLD_BLOCK_SIZE, "black");
   for(var i =0; i*WORLD_BLOCK_SIZE < canvas.width; i++) {
     //console.log(i);
     if(worldPics[i] != undefined){
@@ -15,7 +15,7 @@ function drawTileSelector() {
   }
 
 
-  outlineRect(0,0, canvas.width, 50, "black");
+  outlineRect(0,0, canvas.width, WORLD_BLOCK_SIZE, "black");
 }
 function drawMouseHover() {
   var col = Math.floor(mouseX/WORLD_BLOCK_SIZE) + Math.floor((camPanX +WORLD_BLOCK_SIZE/2 ) /WORLD_BLOCK_SIZE);
@@ -29,7 +29,7 @@ function drawMouseHoverTileSelector() {
   var col = Math.floor(mouseX/WORLD_BLOCK_SIZE);
   var row = Math.floor(mouseY/WORLD_BLOCK_SIZE);
   if( isInbound(col, row)) {
-    if (mouseY < 50) {
+    if (mouseY < WORLD_BLOCK_SIZE) {
       outlineRect(col* WORLD_BLOCK_SIZE, row* WORLD_BLOCK_SIZE,
                WORLD_BLOCK_SIZE , WORLD_BLOCK_SIZE , 'blue' );
     }

@@ -1,3 +1,17 @@
+var LEVEL_EDITOR = false;
+var debugMode = false;
+const WORLD_BLOCK_SIZE = 50; // size in pixels
+const MOVE_SPEED = 10;
+var showGridLines = false;
+const PLAYER_STARTING_COL = 3;
+const PLAYER_STARTING_ROW = 3;
+var HINTS_ON = true;
+
+var LEVEL_PACK = levels;
+var map_counter = 0;
+
+const PLAYER_DIST_FROM_CENTER_BERFORE_CAMERA_PAN_X = 50;
+const PLAYER_DIST_FROM_CENTER_BERFORE_CAMERA_PAN_Y = 50;
 // Player 1 controls
 const KEY_LEFT_ARROW = 37;
 const KEY_UP_ARROW = 38;
@@ -13,6 +27,15 @@ const KEY_S = 83;
 var mouseX, mouseY;
 var mouseheld = false;
 
+if (LEVEL_EDITOR) {
+  var editButtons = document.getElementsByClassName('levelEditor');
+  for(i=0; i< editButtons.length; i++){
+    editButtons[i].classList.add("show");
+  }
+  LEVEL_PACK = [baseLevel];
+  var showGridLines = true;
+}
+
 function setupInput() {
   canvas.addEventListener('mousemove', updateMousePos);
   canvas.addEventListener('mousedown', mouseClicked);
@@ -21,7 +44,7 @@ function setupInput() {
   document.addEventListener('keyup', keyReleased);
 
   player1.setupInput(KEY_UP_ARROW,KEY_RIGHT_ARROW,KEY_LEFT_ARROW,KEY_DOWN_ARROW);
-  //player2.setupInput(KEY_W,KEY_D,KEY_A,KEY_S);
+  // player2.setupInput(KEY_W,KEY_D,KEY_A,KEY_S);
 }
 function mouseClicked(evt) {
   mouseheld = true;
