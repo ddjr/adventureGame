@@ -1,4 +1,4 @@
-var LEVEL_EDITOR = false;
+var LEVEL_EDITOR = true;
 var debugMode = false;
 const WORLD_BLOCK_SIZE = 50; // size in pixels
 const MOVE_SPEED = 10;
